@@ -48,31 +48,31 @@ export default function Home() {
     setIsLoading(false);
   };
   return (
-    <div className="min-h-screen gradient-hero">
-      <div className="container max-w-3xl mx-auto px-4 py-12 md:py-20">
+    <div className="flex flex-col items-center justify-between w-full min-h-screen gradient-hero">
+      <div className="container flex flex-col items-center max-w-3xl gap-8 px-4 py-12 md:py-20">
         {/* Header */}
-        <header className="text-center mb-12">
-          <div className="inline-flex items-center justify-center gap-3 mb-6">
-            <div className="p-3 rounded-2xl bg-primary/10 animate-pulse-glow">
-              <Clapperboard className="h-8 w-8 text-primary" />
+        <header className="flex flex-col items-center gap-6 text-center">
+          <div className="inline-flex items-center justify-center gap-3">
+            <div className="flex items-center justify-center p-3 rounded-2xl bg-primary/10 animate-pulse-glow">
+              <h1 className="text-4xl font-bold font-display md:text-5xl text-foreground">
+                Movie <span className="text-primary">Recommender</span>
+              </h1>
             </div>
           </div>
-          <h1 className="font-display text-4xl md:text-5xl font-bold text-foreground mb-4">
-            Movie <span className="text-primary">Recommender</span>
-          </h1>
-          <p className="text-muted-foreground text-lg max-w-md mx-auto">
-            Describe the kind of movie you're in the mood for, and we'll find the perfect match.
+          <p className="max-w-md text-lg text-muted-foreground">
+            Your movie <span className="text-primary"> recommender,</span> describe the kind of
+            movie you're in the mood for, and we'll find the perfect match.
           </p>
         </header>
 
         {/* Main Input Section */}
         <main className="space-y-6">
-          <div className="gradient-card rounded-2xl border border-border p-6 md:p-8">
+          <div className="p-6 border gradient-card rounded-2xl border-border md:p-8">
             <Textarea
               placeholder="I'm looking for a mind-bending sci-fi thriller with deep philosophical themes, unexpected plot twists, and stunning visuals..."
               value={summary}
               onChange={(e) => setSummary(e.target.value)}
-              className="min-h-40 text-base bg-background/50"
+              className="text-base min-h-40 bg-background/50"
             />
 
             <ModeToggle isLLM={isLLM} onToggle={setIsLLM} />
@@ -85,12 +85,12 @@ export default function Home() {
               disabled={isLoading || !summary.trim()}>
               {isLoading ? (
                 <>
-                  <Loader2 className="h-5 w-5 animate-spin" />
+                  <Loader2 className="w-5 h-5 animate-spin" />
                   Finding movies...
                 </>
               ) : (
                 <>
-                  <Send className="h-5 w-5" />
+                  <Send className="w-5 h-5" />
                   Get Recommendations
                 </>
               )}
@@ -101,10 +101,10 @@ export default function Home() {
           {hasSearched && !isLoading && (
             <section className="space-y-4">
               <div className="flex items-center gap-2 text-muted-foreground">
-                <Sparkles className="h-4 w-4 text-primary" />
+                <Sparkles className="w-4 h-4 text-primary" />
                 <span className="text-sm">
                   Found {recommendations.length} movies using{" "}
-                  <span className="text-primary font-medium">{isLLM ? "LLM" : "ML Model"}</span>
+                  <span className="font-medium text-primary">{isLLM ? "LLM" : "ML Model"}</span>
                 </span>
               </div>
               <div className="grid gap-3">
@@ -124,7 +124,7 @@ export default function Home() {
         </main>
 
         {/* Footer */}
-        <footer className="text-center mt-16 text-muted-foreground text-sm">
+        <footer className="text-sm text-center text-muted-foreground">
           <p>Toggle between traditional ML and modern LLM recommendations</p>
         </footer>
       </div>
