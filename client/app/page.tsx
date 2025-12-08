@@ -72,7 +72,7 @@ export default function Home() {
               placeholder="I'm looking for a mind-bending sci-fi thriller with deep philosophical themes, unexpected plot twists, and stunning visuals..."
               value={summary}
               onChange={(e) => setSummary(e.target.value)}
-              className="min-h-[160px] text-base bg-background/50"
+              className="min-h-40 text-base bg-background/50"
             />
 
             <ModeToggle isLLM={isLLM} onToggle={setIsLLM} />
