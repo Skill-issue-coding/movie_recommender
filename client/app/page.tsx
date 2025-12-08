@@ -25,7 +25,12 @@ const mockLLMMovies: Movie[] = [
   { title: "Arrival", year: 2016, genre: "Sci-Fi", matchScore: 96 },
   { title: "Ex Machina", year: 2014, genre: "Thriller", matchScore: 93 },
   { title: "Her", year: 2013, genre: "Romance", matchScore: 90 },
-  { title: "Eternal Sunshine of the Spotless Mind", year: 2004, genre: "Drama", matchScore: 87 },
+  {
+    title: "Eternal Sunshine of the Spotless Mind",
+    year: 2004,
+    genre: "Drama",
+    matchScore: 87,
+  },
 ];
 
 export default function Home() {
@@ -53,15 +58,19 @@ export default function Home() {
         {/* Header */}
         <header className="flex flex-col items-center gap-6 text-center">
           <div className="inline-flex items-center justify-center">
-            <div className="flex items-center justify-center px-6 py-3 rounded-2xl bg-primary/10 animate-pulse-glow">
-              <h1 className="text-4xl font-bold font-display md:text-5xl text-foreground">
-                Movie <span className="text-primary">Recommender</span>
+            <div className="flex items-center justify-center ">
+              <h1 className="text-4xl font-semibold font-display md:text-5xl text-foreground">
+                Movie{" "}
+                <span className="text-background animate-pulse-glow bg-primary px-1 rounded-sm">
+                  hub
+                </span>
               </h1>
             </div>
           </div>
           <p className="max-w-md text-lg text-muted-foreground">
-            Your movie <span className="text-primary"> recommender,</span> describe the kind of
-            movie you're in the mood for, and we'll find the perfect match.
+            Your movie <span className="text-primary"> recommender,</span>{" "}
+            describe the kind of movie you're in the mood for, and we'll find
+            the perfect match.
           </p>
         </header>
 
@@ -104,7 +113,9 @@ export default function Home() {
                 <Sparkles className="w-4 h-4 text-primary" />
                 <span className="text-sm">
                   Found {recommendations.length} movies using{" "}
-                  <span className="font-medium text-primary">{isLLM ? "LLM" : "ML Model"}</span>
+                  <span className="font-medium text-primary">
+                    {isLLM ? "LLM" : "ML Model"}
+                  </span>
                 </span>
               </div>
               <div className="grid gap-3">
