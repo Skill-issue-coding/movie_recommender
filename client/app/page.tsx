@@ -6,6 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Clapperboard, Send, Loader2, Sparkles } from "lucide-react";
 import ModeToggle from "@/components/ModeToggle";
 import MovieCard from "@/components/MovieCard";
+import { MLEndpoint } from "@/components/TestCall";
 
 interface Movie {
   title: string;
@@ -47,11 +48,22 @@ export default function Home() {
     setHasSearched(true);
 
     // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1500));
+    const recomendations = await MLEndpoint(summary);
+
+    console.log(recomendations);
 
     setRecommendations(isLLM ? mockLLMMovies : mockMLMovies);
     setIsLoading(false);
   };
+
+  /*
+    Test queries:
+      1. I want a crime movie directed by Tarantino
+      2. I am looking for a visually spectacular sci-fi noir set in a dying, dystopian future where the line between artificial intelligence and humanity is blurred.
+      3. Tarantino
+      4. I want a period drama movie with a touch of romance with the actor Tom Hanks.
+  */
+
   return (
     <div className="flex flex-col items-center justify-between w-full min-h-screen gradient-hero">
       <div className="container flex flex-col items-center max-w-3xl gap-8 px-4 py-12 md:py-20">
@@ -68,9 +80,8 @@ export default function Home() {
             </div>
           </div>
           <p className="max-w-md text-lg text-muted-foreground">
-            Your movie <span className="text-primary"> recommender,</span>{" "}
-            describe the kind of movie you're in the mood for, and we'll find
-            the perfect match.
+            Your movie <span className="text-primary"> recommender,</span> describe the kind of
+            movie you're in the mood for, and we'll find the perfect match.
           </p>
         </header>
 
@@ -113,9 +124,7 @@ export default function Home() {
                 <Sparkles className="w-4 h-4 text-primary" />
                 <span className="text-sm">
                   Found {recommendations.length} movies using{" "}
-                  <span className="font-medium text-primary">
-                    {isLLM ? "LLM" : "ML Model"}
-                  </span>
+                  <span className="font-medium text-primary">{isLLM ? "LLM" : "ML Model"}</span>
                 </span>
               </div>
               <div className="grid gap-3">
