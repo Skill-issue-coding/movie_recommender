@@ -52,8 +52,8 @@ export default function Home() {
       <div className="container flex flex-col items-center max-w-3xl gap-8 px-4 py-12 md:py-20">
         {/* Header */}
         <header className="flex flex-col items-center gap-6 text-center">
-          <div className="inline-flex items-center justify-center gap-3">
-            <div className="flex items-center justify-center p-3 rounded-2xl bg-primary/10 animate-pulse-glow">
+          <div className="inline-flex items-center justify-center">
+            <div className="flex items-center justify-center px-6 py-3 rounded-2xl bg-primary/10 animate-pulse-glow">
               <h1 className="text-4xl font-bold font-display md:text-5xl text-foreground">
                 Movie <span className="text-primary">Recommender</span>
               </h1>
