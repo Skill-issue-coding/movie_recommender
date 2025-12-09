@@ -50,15 +50,12 @@ export default function Home() {
     setHasSearched(true);
 
     // Simulate API call
-    const reco = await MLEndpoint(summary);
-
-    // if (!reco) {
-    //   console.error("Error when retrieving recommendations");
-    //   return;
-    // }
-
-    setRecommendations(reco ?? []);
-    setIsLoading(false);
+    if (!isLLM) {
+      const reco = await MLEndpoint(summary);
+      setRecommendations(reco ?? []);
+      setIsLoading(false);
+      return;
+    }
   };
 
   /*
