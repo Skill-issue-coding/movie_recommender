@@ -48,11 +48,11 @@ def initialize_recommender():
             df_compare['Released_Year'].astype(str) + " " +
             df_compare['Genre'].astype(str) + " " +
             df_compare['Director'].astype(str) + " " +
-            df_compare['Star1'].fillna('').astype(str) + " " +
-            df_compare['Star2'].fillna('').astype(str) + " " +
-            df_compare['Star3'].fillna('').astype(str) + " " +
-            df_compare['Star4'].fillna('').astype(str) + " " +
-            df_compare['Overview'].fillna('').astype(str)
+            df_compare['Star1'].astype(str) + " " +
+            df_compare['Star2'].astype(str) + " " +
+            df_compare['Star3'].astype(str) + " " +
+            df_compare['Star4'].astype(str) + " " +
+            df_compare['Overview'].astype(str)
     )
 
     # Initialize the Vectorizer and train the matrix
