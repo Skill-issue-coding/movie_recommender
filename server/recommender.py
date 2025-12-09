@@ -73,10 +73,10 @@ def get_recommendations(user_input: str, tfidf_vectorizer, tfidf_matrix, origina
     if len(extracted_keywords.split()) > 2:
         search_query = extracted_keywords
         # Inom ett API-anrop bör man minimera print-satser
-        # print(f"  > Söker med Nyckelord: '{search_query}'") 
+        print(f"  > Söker med Nyckelord: '{search_query}'") 
     else:
         search_query = user_input
-        # print(f"  > Söker med Rå Inmatning: '{search_query}'")
+        print(f"  > Söker med Rå Inmatning: '{search_query}'")
 
     # Transformera användarens inmatning till en TF-IDF-vektor
     user_tfidf = tfidf_vectorizer.transform([search_query])
