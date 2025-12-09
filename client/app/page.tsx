@@ -52,16 +52,14 @@ export default function Home() {
     // Simulate API call
     const reco = await MLEndpoint(summary);
 
-    if (!reco) {
-      console.error("Error when retrieving recommendations");
-      return;
-    }
+    // if (!reco) {
+    //   console.error("Error when retrieving recommendations");
+    //   return;
+    // }
 
-    setRecommendations(reco);
+    setRecommendations(reco ?? []);
     setIsLoading(false);
   };
-
-  console.log(recommendations);
 
   /*
     Test queries:
@@ -69,6 +67,7 @@ export default function Home() {
       2. I am looking for a visually spectacular sci-fi noir set in a dying, dystopian future where the line between artificial intelligence and humanity is blurred.
       3. Tarantino
       4. I want a period drama movie with a touch of romance with the actor Tom Hanks.
+      5. I want to see a tradgic romance period movie about a young couple falling in love on a boat that then crashes into an iceberg. The boy is poor and the girl is rich
   */
 
   return (

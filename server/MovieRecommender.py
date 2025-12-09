@@ -133,6 +133,12 @@ if csv_files:
     rec4 = get_recommendations(req4, tfidf, tfidf_matrix, df)
     print(rec4[['Series_Title', 'Released_Year', 'Runtime', 'Genre', 'IMDB_Rating', 'Overview', 'Meta_score', 'Director', 'Star1', 'Star2', 'Star3', 'Star4']])
     print("\n" + "=" * 50 + "\n")
+
+    print("--- TEST 5 ---")
+    req5 = "I want to see a tradgic romance period movie about a young couple falling in love on a boat that then crashes into an iceberg. The boy is poor and the girl is rich"
+    rec5 = get_recommendations(req5, tfidf, tfidf_matrix, df)
+    print(rec5[['Series_Title', 'Released_Year', 'Runtime', 'Genre', 'IMDB_Rating', 'Overview', 'Meta_score', 'Director', 'Star1', 'Star2', 'Star3', 'Star4']])
+    print("\n" + "=" * 50 + "\n")
 else:
     print("No CSV file found in the downloaded path.")
 
