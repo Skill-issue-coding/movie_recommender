@@ -112,13 +112,13 @@ export default function Home() {
               disabled={isLoading || !summary.trim()}>
               {isLoading ? (
                 <>
-                  <Loader2 className="w-5 h-5 animate-spin" />
                   Finding movies...
+                  <Loader2 className="w-5 h-5 animate-spin" />
                 </>
               ) : (
                 <>
-                  <Send className="w-5 h-5" />
                   Get Recommendations
+                  <Send className="w-5 h-5" />
                 </>
               )}
             </Button>
