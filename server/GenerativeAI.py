@@ -23,6 +23,10 @@ if csv_files:
     columns_to_drop_search = ['Poster_Link', 'Runtime', 'IMDB_Rating', 'Meta_score']
     df_compare = df.drop(columns=columns_to_drop_search)
 
+    # 2. FILL NA FOR THE WHOLE DATAFRAME
+    # This replaces every NaN in every column with an empty string ""
+    df_compare = df_compare.fillna('')
+
     # --- INPUT: Define what the user wants ---
     user_request = ""
 

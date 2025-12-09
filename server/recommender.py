@@ -29,13 +29,18 @@ def initialize_recommender():
     df = pd.read_csv(os.path.join(path, csv_files[0]))
     print(f"Datasetet laddat: {len(df)} rader.")
 
+    # 2. GLOBAL CLEANING
+    # This fixes the NaN errors for BOTH the soup AND the final display
+    # inplace=True modifies df directly
+    df.fillna('', inplace=True)
+
     # Drop unnecessary columns
     columns_to_drop = ['Certificate', 'No_of_Votes', 'Gross']
-    df.drop(columns=columns_to_drop, inplace=True)
+    df.drop(columns=columns_to_drop, inplace=True, errors='ignore')
 
     # Columns to exclude from the content_soup (for comparison dataframe)
     columns_to_drop_search = ['Poster_Link', 'Runtime', 'IMDB_Rating', 'Meta_score']
-    df_compare = df.drop(columns=columns_to_drop_search, errors='ignore')
+    df_compare = df.drop(columns=columns_to_drop_search)
 
     # Create the "Soup" (en kombinerad textsträng för varje film)
     df_compare['content_soup'] = (
