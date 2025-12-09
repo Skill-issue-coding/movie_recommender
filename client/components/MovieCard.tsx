@@ -1,15 +1,33 @@
+"use client";
+
 import { EndpointResult } from "@/lib/types";
-import { ChartColumnIncreasing, Star } from "lucide-react";
+import { ChartColumnIncreasing, Film, Star } from "lucide-react";
 import { TypographyMuted } from "./ui/typography";
+import { useState } from "react";
 
 const MovieCard = ({ movie, index }: { movie: EndpointResult; index: number }) => {
+  const [imageFailed, setImageFailed] = useState(false);
+
+  const hasLink = !!movie.Poster_Link;
+
+  const displayElement =
+    imageFailed || !hasLink ? (
+      <Film className="h-7 w-7" />
+    ) : (
+      <img
+        src={movie.Poster_Link}
+        className="rounded-sm object-cover w-full h-full"
+        alt={`Poster for ${movie.Series_Title}`}
+        onError={() => setImageFailed(true)}
+      />
+    );
   return (
     <div
       className="gradient-card rounded-xl border border-border px-5 py-7 hover:border-primary/50 transition-all duration-300 hover:glow-primary animate-slide-up"
       style={{ animationDelay: `${index * 100}ms` }}>
       <div className="flex items-start gap-4">
         <div className="flex h-14 w-14 items-center justify-center rounded-lg bg-primary/10 text-primary">
-          <img src={movie.Poster_Link} className="rounded-sm" />
+          {displayElement}
         </div>
         <div className="flex-1 min-w-0">
           <h3 className="font-display font-semibold text-lg text-foreground truncate">
@@ -20,7 +38,7 @@ const MovieCard = ({ movie, index }: { movie: EndpointResult; index: number }) =
           </p>
         </div>
 
-        {movie.IMDB_Rating !== null && (
+        {movie.IMDB_Rating !== 0 && (
           <div className="flex flex-col gap-2 items-center">
             <div
               className={`flex items-center gap-1 ${
@@ -61,7 +79,7 @@ const MovieCard = ({ movie, index }: { movie: EndpointResult; index: number }) =
           </div>
         )}
 
-        {movie.Meta_score !== null && (
+        {movie.Meta_score && (
           <div className="flex flex-col gap-2 items-center">
             <div
               className={`flex items-center gap-1 ${

@@ -7,7 +7,7 @@ import { Clapperboard, Send, Loader2, Sparkles } from "lucide-react";
 import ModeToggle from "@/components/ModeToggle";
 import MovieCard from "@/components/MovieCard";
 import { EndpointResult } from "@/lib/types";
-import { TypographyH1 } from "@/components/ui/typography";
+import { TypographyH1, TypographyMuted } from "@/components/ui/typography";
 import { MLEndpoint } from "@/lib/functions";
 
 interface Movie {
@@ -42,6 +42,7 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const [recommendations, setRecommendations] = useState<EndpointResult[]>([]);
   const [hasSearched, setHasSearched] = useState(false);
+  const [keywords, setKeywords] = useState([]);
 
   const handleSubmit = async () => {
     if (!summary.trim()) return;
@@ -51,14 +52,15 @@ export default function Home() {
 
     // Simulate API call
     if (!isLLM) {
-      const reco = await MLEndpoint(summary);
-      setRecommendations(reco ?? []);
+      const result = await MLEndpoint(summary);
+      setRecommendations(result?.movies ?? []);
       setIsLoading(false);
+      setKeywords(result?.keywords ?? []);
       return;
     }
   };
 
-  console.log(recommendations);
+  console.log(keywords);
 
   /*
     Test queries:
@@ -125,12 +127,23 @@ export default function Home() {
           {/* Results Section */}
           {hasSearched && !isLoading && (
             <section className="space-y-4">
-              <div className="flex items-center gap-2 text-muted-foreground">
-                <Sparkles className="w-4 h-4 text-primary" />
-                <span className="text-sm">
-                  Found {recommendations.length} movies using{" "}
-                  <span className="font-medium text-primary">{isLLM ? "LLM" : "our ML Model"}</span>
-                </span>
+              <div className="flex justify-between w-full">
+                <div className="flex items-center gap-2 text-muted-foreground">
+                  <Sparkles className="w-4 h-4 text-primary" />
+                  <span className="text-sm">
+                    Found {recommendations.length} movies using{" "}
+                    <span className="font-medium text-primary">
+                      {isLLM ? "LLM" : "our ML Model"}
+                    </span>
+                  </span>
+                </div>
+                <div className="text-muted-foreground">
+                  <TypographyMuted>
+                    {keywords.length > 2
+                      ? `Used keywords: ${keywords[0]}, ${keywords[1]}, ...`
+                      : `Couldn't extract any keywords, used full input`}
+                  </TypographyMuted>
+                </div>
               </div>
               <div className="grid gap-3">
                 {recommendations.map((movie, index) => (

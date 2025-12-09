@@ -34,7 +34,9 @@ async function TestMLEndpoint(): Promise<null | TestEndpointResult> {
   return data.data;
 }
 
-export async function MLEndpoint(summary: string): Promise<null | EndpointResult[]> {
+export async function MLEndpoint(
+  summary: string
+): Promise<null | { movies: EndpointResult[]; keywords: [] }> {
   const { data, error } = await TryCatch(
     axios.post("http://localhost:8080/ml", { summary: summary })
   );
@@ -44,7 +46,5 @@ export async function MLEndpoint(summary: string): Promise<null | EndpointResult
     return null;
   }
 
-  console.log(data.data);
-
-  return data.data.recommendations;
+  return { movies: data.data.recommendations, keywords: data.data.keywords };
 }

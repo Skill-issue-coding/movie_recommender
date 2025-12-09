@@ -35,7 +35,7 @@ def hello_ml():
     if not summary_data:
         return jsonify({"status": "error", "message": "Nyckeln 'summary' saknas i begäran."}), 400
     
-    recommendations_df = get_recommendations(
+    recommendations_df, keywords = get_recommendations(
         user_input=summary_data, 
         tfidf_vectorizer=GLOBAL_TFIDF_VEC, 
         tfidf_matrix=GLOBAL_TFIDF_MATRIX, 
@@ -44,7 +44,7 @@ def hello_ml():
 
     recommendations_list = recommendations_df.to_dict('records')
 
-    return jsonify({"recommendations": recommendations_list})
+    return jsonify({"recommendations": recommendations_list, "keywords": [keywords]})
 
 if __name__ == '__main__':
     load_recommender_system()

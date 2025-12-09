@@ -74,7 +74,7 @@ def get_recommendations(user_input: str, tfidf_vectorizer, tfidf_matrix, origina
     :param tfidf_matrix: Den tränade TF-IDF-matrisen för alla filmer.
     :param original_df: Den ursprungliga DataFrame med alla filmdata.
     :param num_results: Antal rekommendationer att returnera.
-    :return: En Pandas DataFrame med de bästa rekommendationerna.
+    :return: En Pandas DataFrame med de bästa rekommendationerna, extraherade keywords
     """
     
     # --- KEYWORD EXTRACTION LOGIC ---
@@ -105,4 +105,4 @@ def get_recommendations(user_input: str, tfidf_vectorizer, tfidf_matrix, origina
     top_indices = [i[0] for i in sim_scores[:num_results]]
 
     # Returnera de relevanta raderna från original-DataFrame
-    return original_df.iloc[top_indices]
+    return original_df.iloc[top_indices], extracted_keywords
