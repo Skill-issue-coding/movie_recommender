@@ -6,9 +6,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { Clapperboard, Send, Loader2, Sparkles } from "lucide-react";
 import ModeToggle from "@/components/ModeToggle";
 import MovieCard from "@/components/MovieCard";
-import { MLEndpoint } from "@/components/TestCall";
 import { EndpointResult } from "@/lib/types";
 import { TypographyH1 } from "@/components/ui/typography";
+import { MLEndpoint } from "@/lib/functions";
 
 interface Movie {
   title: string;
@@ -50,16 +50,18 @@ export default function Home() {
     setHasSearched(true);
 
     // Simulate API call
-    const recommendations = await MLEndpoint(summary);
+    const reco = await MLEndpoint(summary);
 
-    if (!recommendations) {
+    if (!reco) {
       console.error("Error when retrieving recommendations");
       return;
     }
 
-    setRecommendations(recommendations);
+    setRecommendations(reco);
     setIsLoading(false);
   };
+
+  console.log(recommendations);
 
   /*
     Test queries:
