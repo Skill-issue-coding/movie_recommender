@@ -58,6 +58,8 @@ export default function Home() {
     }
   };
 
+  console.log(recommendations);
+
   /*
     Test queries:
       1. I want a crime movie directed by Tarantino

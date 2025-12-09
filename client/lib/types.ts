@@ -7,9 +7,9 @@ export type EndpointResult = {
   Released_Year: string;
   Runtime: string;
   Genre: string;
-  IMDB_Rating: number;
+  IMDB_Rating: number | null;
   Overview: string;
-  Meta_score: number;
+  Meta_score: number | null;
   Director: string;
   Star1: string;
   Star2: string;

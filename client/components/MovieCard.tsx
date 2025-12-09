@@ -20,82 +20,87 @@ const MovieCard = ({ movie, index }: { movie: EndpointResult; index: number }) =
           </p>
         </div>
 
-        <div className="flex flex-col gap-2 items-center">
-          <div
-            className={`flex items-center gap-1 ${
-              movie.IMDB_Rating < 4
-                ? "bg-destructive/10"
-                : movie.IMDB_Rating < 7
-                ? "bg-chart-5/10"
-                : movie.IMDB_Rating < 8.5
-                ? "bg-chart-3/10"
-                : "bg-chart-2/10"
-            } px-3 py-1.5 rounded-full`}>
-            <Star
-              className={`${
+        {movie.IMDB_Rating !== null && (
+          <div className="flex flex-col gap-2 items-center">
+            <div
+              className={`flex items-center gap-1 ${
                 movie.IMDB_Rating < 4
-                  ? "text-destructive"
+                  ? "bg-destructive/10"
                   : movie.IMDB_Rating < 7
-                  ? "text-chart-5"
+                  ? "bg-chart-5/10"
                   : movie.IMDB_Rating < 8.5
-                  ? "text-chart-3"
-                  : "text-chart-2"
-              } h-4
+                  ? "bg-chart-3/10"
+                  : "bg-chart-2/10"
+              } px-3 py-1.5 rounded-full`}>
+              <Star
+                className={`${
+                  movie.IMDB_Rating < 4
+                    ? "text-destructive"
+                    : movie.IMDB_Rating < 7
+                    ? "text-chart-5"
+                    : movie.IMDB_Rating < 8.5
+                    ? "text-chart-3"
+                    : "text-chart-2"
+                } h-4
             w-4`}
-            />
-            <span
-              className={`text-sm font-medium ${
-                movie.IMDB_Rating < 4
-                  ? "text-destructive"
-                  : movie.IMDB_Rating < 7
-                  ? "text-chart-5"
-                  : movie.IMDB_Rating < 8.5
-                  ? "text-chart-3"
-                  : "text-chart-2"
-              }`}>
-              {movie.IMDB_Rating}
-            </span>
+              />
+              <span
+                className={`text-sm font-medium ${
+                  movie.IMDB_Rating < 4
+                    ? "text-destructive"
+                    : movie.IMDB_Rating < 7
+                    ? "text-chart-5"
+                    : movie.IMDB_Rating < 8.5
+                    ? "text-chart-3"
+                    : "text-chart-2"
+                }`}>
+                {movie.IMDB_Rating}
+              </span>
+            </div>
+            <TypographyMuted>IMDB</TypographyMuted>
           </div>
-          <TypographyMuted>IMDB</TypographyMuted>
-        </div>
-        <div className="flex flex-col gap-2 items-center">
-          <div
-            className={`flex items-center gap-1 ${
-              movie.Meta_score < 39
-                ? "bg-destructive/10"
-                : movie.Meta_score < 40
-                ? "bg-chart-5/10"
-                : movie.Meta_score < 80
-                ? "bg-chart-3/10"
-                : "bg-chart-2/10"
-            } px-3 py-1.5 rounded-full`}>
-            <ChartColumnIncreasing
-              className={`${
+        )}
+
+        {movie.Meta_score !== null && (
+          <div className="flex flex-col gap-2 items-center">
+            <div
+              className={`flex items-center gap-1 ${
                 movie.Meta_score < 39
-                  ? "text-destructive"
+                  ? "bg-destructive/10"
                   : movie.Meta_score < 40
-                  ? "text-chart-5"
+                  ? "bg-chart-5/10"
                   : movie.Meta_score < 80
-                  ? "text-chart-3"
-                  : "text-chart-2"
-              } h-4
+                  ? "bg-chart-3/10"
+                  : "bg-chart-2/10"
+              } px-3 py-1.5 rounded-full`}>
+              <ChartColumnIncreasing
+                className={`${
+                  movie.Meta_score < 39
+                    ? "text-destructive"
+                    : movie.Meta_score < 40
+                    ? "text-chart-5"
+                    : movie.Meta_score < 80
+                    ? "text-chart-3"
+                    : "text-chart-2"
+                } h-4
             w-4`}
-            />
-            <span
-              className={`text-sm font-medium ${
-                movie.Meta_score < 39
-                  ? "text-destructive"
-                  : movie.Meta_score < 40
-                  ? "text-chart-5"
-                  : movie.Meta_score < 80
-                  ? "text-chart-3"
-                  : "text-chart-2"
-              }`}>
-              {movie.Meta_score}
-            </span>
+              />
+              <span
+                className={`text-sm font-medium ${
+                  movie.Meta_score < 39
+                    ? "text-destructive"
+                    : movie.Meta_score < 40
+                    ? "text-chart-5"
+                    : movie.Meta_score < 80
+                    ? "text-chart-3"
+                    : "text-chart-2"
+                }`}>
+                {movie.Meta_score}
+              </span>
+            </div>
+            <TypographyMuted>Metascore</TypographyMuted>
           </div>
-          <TypographyMuted>Metascore</TypographyMuted>
-        </div>
+        )}
       </div>
     </div>
   );

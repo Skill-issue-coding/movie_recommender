@@ -61,19 +61,25 @@ def initialize_recommender():
 
 def get_recommendations(user_input: str, tfidf_vectorizer, tfidf_matrix, original_df, num_results: int = 10):
     """
-    Genererar filmrekommendationer baserat på användarens textinmatning.
-    ... [Funktionsbeskrivning] ...
+    Genererar filmrekommendationer baserat på användarens textinmatning 
+    med hjälp av Cosine Similarity på TF-IDF-matrisen.
+
+    :param user_input: Textinmatning från användaren.
+    :param tfidf_vectorizer: Den tränade TfidfVectorizer.
+    :param tfidf_matrix: Den tränade TF-IDF-matrisen för alla filmer.
+    :param original_df: Den ursprungliga DataFrame med alla filmdata.
+    :param num_results: Antal rekommendationer att returnera.
+    :return: En Pandas DataFrame med de bästa rekommendationerna.
     """
     
-    # ... [Resten av din get_recommendations funktion] ...
-    
     # --- KEYWORD EXTRACTION LOGIC ---
+    # Försök att extrahera nyckelord med Summa (TextRank)
     extracted_keywords = keywords.keywords(user_input).replace('\n', ' ')
 
+    # LOGIK: Om Summa misslyckas (kort sträng), använd hela inmatningen
     if len(extracted_keywords.split()) > 2:
         search_query = extracted_keywords
-        # Inom ett API-anrop bör man minimera print-satser
-        print(f"  > Söker med Nyckelord: '{search_query}'") 
+        print(f"  > Söker med Nyckelord: '{search_query}'")
     else:
         search_query = user_input
         print(f"  > Söker med Rå Inmatning: '{search_query}'")
@@ -81,11 +87,13 @@ def get_recommendations(user_input: str, tfidf_vectorizer, tfidf_matrix, origina
     # Transformera användarens inmatning till en TF-IDF-vektor
     user_tfidf = tfidf_vectorizer.transform([search_query])
 
-    # Beräkna Cosine Similarity
+    # Beräkna Cosine Similarity mellan användarvektorn och alla filmer
     cosine_sim = linear_kernel(user_tfidf, tfidf_matrix)
 
-    # Hämta poängen och sortera
+    # Hämta poängen
     sim_scores = list(enumerate(cosine_sim[0]))
+
+    # Sortera filmerna efter poäng (högst först)
     sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)
 
     # Hämta index för de bästa resultaten

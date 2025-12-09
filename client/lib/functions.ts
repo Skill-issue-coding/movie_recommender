@@ -44,5 +44,7 @@ export async function MLEndpoint(summary: string): Promise<null | EndpointResult
     return null;
   }
 
+  console.log(data.data);
+
   return data.data.recommendations;
 }
