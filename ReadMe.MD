@@ -35,7 +35,7 @@ python3 ./main.py
 Create a `venv`
 
 ```bash
-cd server && python -m venv venv
+cd server && py -m venv venv
 ```
 
 Activate the `venv`
