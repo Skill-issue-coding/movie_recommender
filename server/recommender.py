@@ -60,29 +60,26 @@ def initialize_recommender():
     return tfidf, tfidf_matrix, df
 
 def get_recommendations(user_input: str, tfidf_vectorizer, tfidf_matrix, original_df, num_results: int = 10):
+    """
+    Genererar filmrekommendationer baserat på användarens textinmatning.
+    ... [Funktionsbeskrivning] ...
+    """
     
-    # --- KEYWORD EXTRACTION LOGIC (KORRIGERAD) ---
-    try:
-        # FIX 1: Tvinga Summa att extrahera max 5 ord för att få ett koncentrerat sökresultat.
-        extracted_keywords = keywords.keywords(user_input, words=5).replace('\n', ' ')
+    # ... [Resten av din get_recommendations funktion] ...
+    
+    # --- KEYWORD EXTRACTION LOGIC ---
+    extracted_keywords = keywords.keywords(user_input).replace('\n', ' ')
 
-        # FIX 2: Använd teckenlängd (> 2) istället för att splitta, för robusthet.
-        if len(extracted_keywords) > 2: 
-            search_query = extracted_keywords
-            print(f"  > Söker med Nyckelord: '{search_query}'")
-        else:
-            search_query = user_input
-            print(f"  > Söker med Rå Inmatning (fallback): '{search_query}'")
-            
-    except Exception as e:
-        # Fallback om Summa stöter på ett runtime-fel
+    if len(extracted_keywords.split()) > 2:
+        search_query = extracted_keywords
+        # Inom ett API-anrop bör man minimera print-satser
+        # print(f"  > Söker med Nyckelord: '{search_query}'") 
+    else:
         search_query = user_input
-        print(f"  > Summa felade ({e}). Söker med Rå Inmatning: '{search_query}'")
+        # print(f"  > Söker med Rå Inmatning: '{search_query}'")
 
-
-    # Transformera den valda sökfrågan till en TF-IDF-vektor
-    # Denna rad var korrekt i din ursprungliga kod
-    user_tfidf = tfidf_vectorizer.transform([search_query]) 
+    # Transformera användarens inmatning till en TF-IDF-vektor
+    user_tfidf = tfidf_vectorizer.transform([search_query])
 
     # Beräkna Cosine Similarity
     cosine_sim = linear_kernel(user_tfidf, tfidf_matrix)
@@ -94,23 +91,5 @@ def get_recommendations(user_input: str, tfidf_vectorizer, tfidf_matrix, origina
     # Hämta index för de bästa resultaten
     top_indices = [i[0] for i in sim_scores[:num_results]]
 
-    # Hämta de relevanta raderna från original-DataFrame
-    recommendations_df = original_df.iloc[top_indices].copy()
-    
-    # --- KRITISKT STEG: DATABEARBETNING FÖR JSON-KOMPATIBILITET ---
-    
-    # FIX 3: Konvertera NaN/None till Python None och standardtyper (obligatoriskt för Flask/JSON)
-    recommendations_df = recommendations_df.where(pd.notnull(recommendations_df), None)
-    
-    # Konvertera numeriska fält till standard Python-typer
-    for col in ['Released_Year']:
-        if col in recommendations_df.columns:
-            recommendations_df[col] = recommendations_df[col].apply(lambda x: int(x) if x is not None else None)
-            
-    for col in ['IMDB_Rating', 'Meta_score']:
-         if col in recommendations_df.columns:
-            recommendations_df[col] = recommendations_df[col].apply(lambda x: float(x) if x is not None else None)
-
-
-    # Returnera den städade DataFrame (denna går direkt till .to_dict('records') i main.py)
-    return recommendations_df
+    # Returnera de relevanta raderna från original-DataFrame
+    return original_df.iloc[top_indices]
