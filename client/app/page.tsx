@@ -7,6 +7,8 @@ import { Clapperboard, Send, Loader2, Sparkles } from "lucide-react";
 import ModeToggle from "@/components/ModeToggle";
 import MovieCard from "@/components/MovieCard";
 import { MLEndpoint } from "@/components/TestCall";
+import { EndpointResult } from "@/lib/types";
+import { TypographyH1 } from "@/components/ui/typography";
 
 interface Movie {
   title: string;
@@ -38,7 +40,7 @@ export default function Home() {
   const [summary, setSummary] = useState("");
   const [isLLM, setIsLLM] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [recommendations, setRecommendations] = useState<Movie[]>([]);
+  const [recommendations, setRecommendations] = useState<EndpointResult[]>([]);
   const [hasSearched, setHasSearched] = useState(false);
 
   const handleSubmit = async () => {
@@ -48,11 +50,14 @@ export default function Home() {
     setHasSearched(true);
 
     // Simulate API call
-    const recomendations = await MLEndpoint(summary);
+    const recommendations = await MLEndpoint(summary);
 
-    console.log(recomendations);
+    if (!recommendations) {
+      console.error("Error when retrieving recommendations");
+      return;
+    }
 
-    setRecommendations(isLLM ? mockLLMMovies : mockMLMovies);
+    setRecommendations(recommendations);
     setIsLoading(false);
   };
 
@@ -71,12 +76,12 @@ export default function Home() {
         <header className="flex flex-col items-center gap-6 text-center">
           <div className="inline-flex items-center justify-center">
             <div className="flex items-center justify-center ">
-              <h1 className="text-4xl font-semibold font-display md:text-5xl text-foreground">
+              <TypographyH1>
                 Movie{" "}
-                <span className="text-background animate-pulse-glow bg-primary px-1 rounded-sm">
+                <span className="text-background animate-pulse-glow bg-primary px-1.5 rounded-sm">
                   hub
                 </span>
-              </h1>
+              </TypographyH1>
             </div>
           </div>
           <p className="max-w-md text-lg text-muted-foreground">
@@ -124,19 +129,12 @@ export default function Home() {
                 <Sparkles className="w-4 h-4 text-primary" />
                 <span className="text-sm">
                   Found {recommendations.length} movies using{" "}
-                  <span className="font-medium text-primary">{isLLM ? "LLM" : "ML Model"}</span>
+                  <span className="font-medium text-primary">{isLLM ? "LLM" : "our ML Model"}</span>
                 </span>
               </div>
               <div className="grid gap-3">
                 {recommendations.map((movie, index) => (
-                  <MovieCard
-                    key={movie.title}
-                    title={movie.title}
-                    year={movie.year}
-                    genre={movie.genre}
-                    matchScore={movie.matchScore}
-                    index={index}
-                  />
+                  <MovieCard key={movie.Series_Title} movie={movie} index={index} />
                 ))}
               </div>
             </section>

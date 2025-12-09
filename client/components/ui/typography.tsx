@@ -4,10 +4,26 @@ function TypographyH1({
   children: React.ReactNode;
 }>) {
   return (
-    <h1 className="scroll-m-20 text-left text-4xl font-extrabold tracking-tight text-balance">
+    <h1 className="text-4xl font-semibold font-display md:text-5xl text-foreground scroll-m-20 text-left tracking-tight text-balance">
       {children}
     </h1>
   );
 }
 
-export { TypographyH1 };
+function TypographyP({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return <p className="leading-7 not-first:mt-6">{children}</p>;
+}
+
+function TypographyMuted({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return <p className="text-muted-foreground text-sm">{children}</p>;
+}
+
+export { TypographyH1, TypographyP, TypographyMuted };

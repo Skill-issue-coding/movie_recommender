@@ -59,7 +59,7 @@ def initialize_recommender():
 
     return tfidf, tfidf_matrix, df
 
-def get_recommendations(user_input: str, tfidf_vectorizer, tfidf_matrix, original_df, num_results: int = 3):
+def get_recommendations(user_input: str, tfidf_vectorizer, tfidf_matrix, original_df, num_results: int = 10):
     """
     Genererar filmrekommendationer baserat på användarens textinmatning 
     med hjälp av Cosine Similarity på TF-IDF-matrisen.
