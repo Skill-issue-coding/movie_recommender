@@ -111,6 +111,10 @@ export default function Home() {
               </Button>
             </div>
 
+            <p className="text-sm text-center text-muted-foreground">
+              Toggle between traditional ML and modern LLM recommendations
+            </p>
+
             {/* Results Section */}
             {hasSearched && !isLoading && (
               <section className="space-y-4">
@@ -140,11 +144,6 @@ export default function Home() {
               </section>
             )}
           </main>
-
-          {/* Footer */}
-          <footer className="text-sm text-center text-muted-foreground">
-            <p>Toggle between traditional ML and modern LLM recommendations</p>
-          </footer>
         </div>
       </div>
     </>
