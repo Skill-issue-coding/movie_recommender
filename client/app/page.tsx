@@ -10,32 +10,6 @@ import { EndpointResult } from "@/lib/types";
 import { TypographyH1, TypographyMuted } from "@/components/ui/typography";
 import { MLEndpoint } from "@/lib/functions";
 
-interface Movie {
-  title: string;
-  year: number;
-  genre: string;
-  matchScore: number;
-}
-
-const mockMLMovies: Movie[] = [
-  { title: "Inception", year: 2010, genre: "Sci-Fi", matchScore: 94 },
-  { title: "The Matrix", year: 1999, genre: "Sci-Fi", matchScore: 91 },
-  { title: "Interstellar", year: 2014, genre: "Sci-Fi", matchScore: 88 },
-  { title: "Blade Runner 2049", year: 2017, genre: "Sci-Fi", matchScore: 85 },
-];
-
-const mockLLMMovies: Movie[] = [
-  { title: "Arrival", year: 2016, genre: "Sci-Fi", matchScore: 96 },
-  { title: "Ex Machina", year: 2014, genre: "Thriller", matchScore: 93 },
-  { title: "Her", year: 2013, genre: "Romance", matchScore: 90 },
-  {
-    title: "Eternal Sunshine of the Spotless Mind",
-    year: 2004,
-    genre: "Drama",
-    matchScore: 87,
-  },
-];
-
 export default function Home() {
   const [summary, setSummary] = useState("");
   const [isLLM, setIsLLM] = useState(false);
