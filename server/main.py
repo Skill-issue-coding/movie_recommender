@@ -21,6 +21,10 @@ def load_recommender_system():
 def hello_llm():
     return jsonify({"message": "Hello from LLM endpoint"})
 
+@app.route("/test", methods=["GET"])
+def test_endpoint():
+    return {"api": "online"}
+
 @app.route("/ml", methods=['POST'])
 def hello_ml():
     if GLOBAL_DF is None:

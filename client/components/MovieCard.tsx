@@ -4,6 +4,7 @@ import { EndpointResult } from "@/lib/types";
 import { ChartColumnIncreasing, Film, Star } from "lucide-react";
 import { TypographyMuted } from "./ui/typography";
 import { useState } from "react";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "./ui/accordion";
 
 const MovieCard = ({ movie, index }: { movie: EndpointResult; index: number }) => {
   const [imageFailed, setImageFailed] = useState(false);
@@ -34,7 +35,7 @@ const MovieCard = ({ movie, index }: { movie: EndpointResult; index: number }) =
             {movie.Series_Title}
           </h3>
           <p className="text-muted-foreground text-sm mt-1">
-            {movie.Released_Year} • {movie.Genre}
+            {movie.Released_Year} • {movie.Genre} • {movie.Runtime}
           </p>
         </div>
 
@@ -120,6 +121,24 @@ const MovieCard = ({ movie, index }: { movie: EndpointResult; index: number }) =
           </div>
         )}
       </div>
+      <Accordion type="single" collapsible>
+        <AccordionItem value={`movie-description-${index}`}>
+          <AccordionTrigger className="flex-1 flex justify-center" />
+          <AccordionContent>
+            <div className="flex flex-col flex-1 gap-4 bg-hero-1 px-6 py-4 rounded-md">
+              <div>
+                <p>{movie.Overview}</p>
+              </div>
+              <div className="flex gap-8">
+                <TypographyMuted>{movie.Star1}</TypographyMuted>
+                <TypographyMuted>{movie.Star2}</TypographyMuted>
+                <TypographyMuted>{movie.Star3}</TypographyMuted>
+                <TypographyMuted>{movie.Star4}</TypographyMuted>
+              </div>
+            </div>
+          </AccordionContent>
+        </AccordionItem>
+      </Accordion>
     </div>
   );
 };
