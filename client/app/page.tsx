@@ -8,7 +8,7 @@ import ModeToggle from "@/components/ModeToggle";
 import MovieCard from "@/components/MovieCard";
 import { EndpointResult } from "@/lib/types";
 import { TypographyH1, TypographyMuted } from "@/components/ui/typography";
-import { MLEndpoint, TestAPI } from "@/lib/functions";
+import { LLMEndpoint, MLEndpoint, TestAPI } from "@/lib/functions";
 
 export default function Home() {
   const [summary, setSummary] = useState("");
@@ -19,11 +19,23 @@ export default function Home() {
   const [hasSearched, setHasSearched] = useState(false);
   const [keywords, setKeywords] = useState([]);
 
+  // temporary
+  const [llmMessage, setLlmMessage] = useState<string | null>(null);
+
   const handleSubmit = async () => {
     if (!summary.trim()) return;
 
     setIsLoading(true);
     setHasSearched(true);
+
+    if (isLLM) {
+      const result = await LLMEndpoint(summary);
+      if (result) {
+        setLlmMessage(result);
+      }
+      setRecommendations([]);
+      setIsLoading(false);
+    }
 
     if (!isLLM) {
       const result = await MLEndpoint(summary);
@@ -58,7 +70,9 @@ export default function Home() {
       <div className="flex flex-col items-center w-full min-h-screen gradient-hero">
         <p className="mt-4">
           Api status:{" "}
-          <span className="text-primary font-bold">{apiStatus ? "Online" : "Offline"}</span>
+          <span className="text-primary font-bold">
+            {apiStatus ? "Online" : "Offline"}
+          </span>
         </p>
         <div className="container flex flex-col items-center justify-center max-w-3xl gap-8 px-4 py-12 md:py-20 flex-2">
           {/* Header */}
@@ -74,8 +88,9 @@ export default function Home() {
               </div>
             </div>
             <p className="max-w-md text-lg text-muted-foreground">
-              Your movie <span className="text-primary"> recommender,</span> describe the kind of
-              movie you're in the mood for, and we'll find the perfect match.
+              Your movie <span className="text-primary"> recommender,</span>{" "}
+              describe the kind of movie you're in the mood for, and we'll find
+              the perfect match.
             </p>
           </header>
 
@@ -118,6 +133,13 @@ export default function Home() {
             {/* Results Section */}
             {hasSearched && !isLoading && (
               <section className="space-y-4">
+                {isLLM && llmMessage && (
+                  <div className="p-4 border rounded-lg border-primary/50 bg-primary/10">
+                    <p className="font-mono text-lg text-primary">
+                      LLM Endpoint Response: **{llmMessage}**
+                    </p>
+                  </div>
+                )}
                 <div className="flex justify-between w-full">
                   <div className="flex items-center gap-2 text-muted-foreground">
                     <Sparkles className="w-4 h-4 text-primary" />
@@ -138,7 +160,11 @@ export default function Home() {
                 </div>
                 <div className="grid gap-3">
                   {recommendations.map((movie, index) => (
-                    <MovieCard key={movie.Series_Title} movie={movie} index={index} />
+                    <MovieCard
+                      key={movie.Series_Title}
+                      movie={movie}
+                      index={index}
+                    />
                   ))}
                 </div>
               </section>

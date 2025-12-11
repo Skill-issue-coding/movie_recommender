@@ -17,6 +17,7 @@ def load_recommender_system():
     if GLOBAL_DF is None:
         print("!!! KRITISKT FEL: Systemet kunde inte laddas. Applikationen kommer inte att fungera korrekt. !!!")
 
+# Fix this
 @app.route("/llm", methods=['POST'])
 def hello_llm():
     return jsonify({"message": "Hello from LLM endpoint"})
