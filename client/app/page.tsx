@@ -128,7 +128,7 @@ export default function Home() {
                     <TypographyMuted>
                       {keywords.length > 2
                         ? `Used keywords: ${keywords[0]}, ${keywords[1]}, ...`
-                        : `Couldn't extract any keywords, used full input`}
+                        : `Used full input`}
                     </TypographyMuted>
                   </div>
                 </div>
