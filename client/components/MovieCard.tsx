@@ -24,7 +24,7 @@ const MovieCard = ({ movie, index }: { movie: EndpointResult; index: number }) =
     );
   return (
     <div
-      className="gradient-card rounded-xl border border-border px-5 py-7 hover:border-primary/50 transition-all duration-300 hover:glow-primary animate-slide-up"
+      className="gradient-card rounded-xl border border-border px-5 pt-7 pb-2 hover:border-primary/50 transition-all duration-300 hover:glow-primary animate-slide-up"
       style={{ animationDelay: `${index * 100}ms` }}>
       <div className="flex items-start gap-4">
         <div className="flex h-14 w-14 items-center justify-center rounded-lg bg-primary/10 text-primary">
