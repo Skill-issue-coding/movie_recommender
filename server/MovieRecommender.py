@@ -90,6 +90,7 @@ if csv_files:
         # This gives a score between 0 (no match) and 1 (perfect match) for every movie
         cosine_sim = linear_kernel(user_tfidf, tfidf_matrix)
 
+
         # Get the scores
         # cosine_sim is a list of lists, we flatten it to a simple list
         sim_scores = list(enumerate(cosine_sim[0]))
@@ -97,7 +98,7 @@ if csv_files:
         # Sort the movies based on the similarity scores (highest first)
         # x[1] is the score, x[0] is the index
         sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)
-
+        #print(sim_scores)
         # Get the top 3 (Index 0, 1, 2)
         top_indices = [i[0] for i in sim_scores[:3]]
 

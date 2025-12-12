@@ -1,9 +1,16 @@
 import pandas as pd
 import kagglehub
+from google import genai
+from google.genai import types
 import os
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import linear_kernel
 from summa import keywords
+import json
+from dotenv import load_dotenv
+
+# load api key from .env
+load_dotenv()
 
 def initialize_recommender():
     """
@@ -64,7 +71,7 @@ def initialize_recommender():
 
     return tfidf, tfidf_matrix, df
 
-def get_recommendations(user_input: str, tfidf_vectorizer, tfidf_matrix, original_df, num_results: int = 10):
+def get_recommendations_ml(user_input: str, tfidf_vectorizer, tfidf_matrix, original_df, num_results: int = 10):
     """
     Genererar filmrekommendationer baserat på användarens textinmatning 
     med hjälp av Cosine Similarity på TF-IDF-matrisen.
@@ -106,3 +113,67 @@ def get_recommendations(user_input: str, tfidf_vectorizer, tfidf_matrix, origina
 
     # Returnera de relevanta raderna från original-DataFrame
     return original_df.iloc[top_indices], extracted_keywords
+
+def get_recommendations_llm(user_input: str, df):
+    # Columns to exclude from the content_soup (for comparison dataframe)
+    columns_to_drop_search = ['Poster_Link', 'Runtime', 'IMDB_Rating', 'Meta_score']
+    df_compare = df.drop(columns=columns_to_drop_search)
+
+    # # 3. Convert df_compare to a CSV string so the AI can read it
+    # # index=False hides the row numbers to save space
+    csv_data = df_compare.to_csv(index=True)
+
+    # --- INPUT: Define what the user wants ---
+    user_request = user_input
+
+    # 4. Create the Prompt
+    # We combine your instructions with the actual data
+    final_prompt = f"""
+    ### ROLE
+    You are a strict data retrieval assistant. Your job is to query the dataset below.
+
+    ### DATASET (Movies with ID)
+    {csv_data}
+
+    ### USER REQUEST
+    "{user_request}"
+
+    ### INSTRUCTIONS
+    1. Analyze the dataset to find the top 10 movies that best match the User Request.
+    2. **SORTING:** Order the results by **Relevance** (Best match = First). Do NOT sort numerically.
+    3. **OUTPUT FORMAT:** Return a raw JSON list of integers only. Do not write explanations. Do not write "json" or markdown tags.
+
+    ### EXAMPLE OUTPUT
+    [45, 12, 998, 34, 545, 75, 85, 03, 135, 777]
+    """
+
+    # 5. Initialize Client (Ensure you have your API Key set in environment variables)
+    # Or pass it directly: client = genai.Client(api_key="YOUR_KEY")
+    client = genai.Client()
+
+    # 6. Call the API
+    print("Sending data to Gemini...")
+    response = client.models.generate_content(
+        model="gemini-2.5-flash",  # I updated this to the current public thinking model
+        contents=final_prompt,
+        # config=types.GenerateContentConfig(
+        #     thinking_config=types.ThinkingConfig(thinking_level="low")
+        # ),
+    )
+    try:
+        # Clean the response (sometimes Gemini adds ```json ... ``` blocks)
+        clean_text = response.text.strip().replace("```json", "").replace("```", "")
+
+        # Parse the list
+        top_indexes = json.loads(clean_text)  # This turns "[1, 2, 3]" into a Python list [1, 2, 3]
+
+        # SAFETY CHECK: Filter out IDs that might not exist in the dataframe
+        valid_indexes = [idx for idx in top_indexes if idx in df.index]
+
+        # Use the indexes
+        print("Top Recommendations:", valid_indexes)
+        final_movies = df.loc[valid_indexes]  # Retrieve full rows
+        print(final_movies[['Series_Title']])
+
+    except json.JSONDecodeError:
+        print("The AI didn't return a valid list. Raw response:", response.text)

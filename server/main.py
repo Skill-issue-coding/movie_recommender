@@ -1,7 +1,7 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 
-from recommender import initialize_recommender, get_recommendations
+from recommender import initialize_recommender, get_recommendations_ml
 
 app = Flask(__name__)
 CORS(app)
@@ -40,7 +40,7 @@ def hello_ml():
     if not summary_data:
         return jsonify({"status": "error", "message": "Nyckeln 'summary' saknas i begäran."}), 400
     
-    recommendations_df, keywords = get_recommendations(
+    recommendations_df, keywords = get_recommendations_ml(
         user_input=summary_data, 
         tfidf_vectorizer=GLOBAL_TFIDF_VEC, 
         tfidf_matrix=GLOBAL_TFIDF_MATRIX, 
