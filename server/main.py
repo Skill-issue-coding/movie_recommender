@@ -4,7 +4,7 @@ from flask_cors import CORS
 from recommender import initialize_recommender, get_recommendations_ml, get_recommendations_llm
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
 
 GLOBAL_TFIDF_VEC = None
 GLOBAL_TFIDF_MATRIX = None
@@ -29,9 +29,27 @@ def hello_llm():
     if not summary_data:
         return jsonify({"status": "error", "message": "Nyckeln 'summary' saknas i begäran."}), 400
     
-    recommendations = get_recommendations_llm(summary_data, GLOBAL_DF)
+    try:
+        recommendations_df = get_recommendations_llm(summary_data, GLOBAL_DF)
+        
+        # Kontrollera om funktionen returnerade en DataFrame eller None/fel (om du ändrar get_recommendations_llm)
+        if recommendations_df is None:
+             # Hantera fallet där LLM-anropet misslyckades inuti recommender.py och returnerade None
+             return jsonify({"status": "error", "message": "Kunde inte generera rekommendationer (LLM-fel)."}), 500
 
-    return jsonify({"recommendations": recommendations})
+        recommendations_list = recommendations_df.to_dict('records')
+
+        return jsonify({"recommendations": recommendations_list})
+        
+    except APIError as e:
+        # Fånga Google GenAI API-fel (inklusive 503) och returnera ett tydligt felmeddelande
+        print(f"!!! LLM API FEL: {e}")
+        return jsonify({"status": "error", "message": f"Kunde inte ansluta till rekommendationstjänsten: {e.status_code} {e.message}"}), 503 # Skicka 503 tillbaka till frontend
+    
+    except Exception as e:
+        # Fånga alla andra oväntade fel
+        print(f"!!! OVÄNTAT FEL: {e}")
+        return jsonify({"status": "error", "message": "Ett oväntat internt serverfel inträffade."}), 500
 
 @app.route("/test", methods=["GET"])
 def test_endpoint():

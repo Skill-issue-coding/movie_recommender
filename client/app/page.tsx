@@ -19,9 +19,6 @@ export default function Home() {
   const [hasSearched, setHasSearched] = useState(false);
   const [keywords, setKeywords] = useState([]);
 
-  // temporary
-  const [llmMessage, setLlmMessage] = useState<string | null>(null);
-
   const handleSubmit = async () => {
     if (!summary.trim()) return;
 
@@ -30,10 +27,7 @@ export default function Home() {
 
     if (isLLM) {
       const result = await LLMEndpoint(summary);
-      if (result) {
-        setLlmMessage(result);
-      }
-      setRecommendations([]);
+      setRecommendations(result?.recommendations ?? []);
       setIsLoading(false);
     }
 
@@ -133,13 +127,6 @@ export default function Home() {
             {/* Results Section */}
             {hasSearched && !isLoading && (
               <section className="space-y-4">
-                {isLLM && llmMessage && (
-                  <div className="p-4 border rounded-lg border-primary/50 bg-primary/10">
-                    <p className="font-mono text-lg text-primary">
-                      LLM Endpoint Response: **{llmMessage}**
-                    </p>
-                  </div>
-                )}
                 <div className="flex justify-between w-full">
                   <div className="flex items-center gap-2 text-muted-foreground">
                     <Sparkles className="w-4 h-4 text-primary" />

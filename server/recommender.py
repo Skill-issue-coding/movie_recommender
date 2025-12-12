@@ -171,9 +171,7 @@ def get_recommendations_llm(user_input: str, df):
         valid_indexes = [idx for idx in top_indexes if idx in df.index]
 
         # Use the indexes
-        print("Top Recommendations:", valid_indexes)
         final_movies = df.loc[valid_indexes]
-        # print(final_movies[['Series_Title']])
 
         return final_movies
     except json.JSONDecodeError:

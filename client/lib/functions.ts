@@ -41,5 +41,6 @@ export async function LLMEndpoint(summary: string): Promise<any> {
     console.error(error);
     return null;
   }
-  return data.data.message;
+
+  return data.data;
 }
