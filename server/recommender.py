@@ -172,8 +172,9 @@ def get_recommendations_llm(user_input: str, df):
 
         # Use the indexes
         print("Top Recommendations:", valid_indexes)
-        final_movies = df.loc[valid_indexes]  # Retrieve full rows
-        print(final_movies[['Series_Title']])
+        final_movies = df.loc[valid_indexes]
+        # print(final_movies[['Series_Title']])
 
+        return final_movies
     except json.JSONDecodeError:
         print("The AI didn't return a valid list. Raw response:", response.text)

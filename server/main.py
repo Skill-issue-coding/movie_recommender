@@ -1,7 +1,7 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 
-from recommender import initialize_recommender, get_recommendations_ml
+from recommender import initialize_recommender, get_recommendations_ml, get_recommendations_llm
 
 app = Flask(__name__)
 CORS(app)
@@ -20,14 +20,25 @@ def load_recommender_system():
 # Fix this
 @app.route("/llm", methods=['POST'])
 def hello_llm():
-    return jsonify({"message": "Hello from LLM endpoint"})
+    if not request.is_json:
+        return jsonify({"status": "error", "message": "Content-Type måste vara 'application/json'."}), 400
+    
+    data = request.get_json()
+    summary_data = data.get('summary')
+
+    if not summary_data:
+        return jsonify({"status": "error", "message": "Nyckeln 'summary' saknas i begäran."}), 400
+    
+    recommendations = get_recommendations_llm(summary_data, GLOBAL_DF)
+
+    return jsonify({"recommendations": recommendations})
 
 @app.route("/test", methods=["GET"])
 def test_endpoint():
     return {"api": "online"}
 
 @app.route("/ml", methods=['POST'])
-def hello_ml():
+def ml_getrecommend():
     if GLOBAL_DF is None:
         return jsonify({"status": "error", "message": "Rekommendationssystemet kunde inte laddas vid uppstart."}), 503 # Service Unavailable
     
