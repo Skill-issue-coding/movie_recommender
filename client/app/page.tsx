@@ -147,11 +147,7 @@ export default function Home() {
                 </div>
                 <div className="grid gap-3">
                   {recommendations.map((movie, index) => (
-                    <MovieCard
-                      key={movie.Series_Title}
-                      movie={movie}
-                      index={index}
-                    />
+                    <MovieCard key={index} movie={movie} index={index} />
                   ))}
                 </div>
               </section>
