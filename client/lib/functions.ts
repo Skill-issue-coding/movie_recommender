@@ -3,9 +3,7 @@ import { TryCatch } from "@/lib/utils";
 import axios from "axios";
 
 export async function TestAPI() {
-  const { data, error } = await TryCatch(
-    axios.get("http://localhost:8080/test")
-  );
+  const { data, error } = await TryCatch(axios.get("http://localhost:8080/test"));
 
   if (error !== null) {
     console.error(error);
@@ -31,10 +29,10 @@ export async function MLEndpoint(
 }
 
 // Fix this later
-export async function LLMEndpoint(summary: string): Promise<any> {
+export async function LLMEndpoint(summary: string, lite: boolean): Promise<any> {
   // TODO: fix type etc.
   const { data, error } = await TryCatch(
-    axios.post("http://localhost:8080/llm", { summary: summary })
+    axios.post("http://localhost:8080/llm", { summary: summary, lite: lite })
   );
 
   if (error !== null) {

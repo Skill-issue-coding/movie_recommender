@@ -114,7 +114,7 @@ def get_recommendations_ml(user_input: str, tfidf_vectorizer, tfidf_matrix, orig
     # Returnera de relevanta raderna från original-DataFrame
     return original_df.iloc[top_indices], extracted_keywords
 
-def get_recommendations_llm(user_input: str, df):
+def get_recommendations_llm(user_input: str, df, lite):
     # Columns to exclude from the content_soup (for comparison dataframe)
     columns_to_drop_search = ['Poster_Link', 'Runtime', 'IMDB_Rating', 'Meta_score']
     df_compare = df.drop(columns=columns_to_drop_search)
@@ -151,10 +151,14 @@ def get_recommendations_llm(user_input: str, df):
     # Or pass it directly: client = genai.Client(api_key="YOUR_KEY")
     client = genai.Client()
 
+    model = "gemini-2.5-flash-lite"
+    if not lite:
+        model = "gemini-2.5-flash"
+
     # 6. Call the API
     print("Sending data to Gemini...")
     response = client.models.generate_content(
-        model="gemini-2.5-flash",  # I updated this to the current public thinking model
+        model=model,  # I updated this to the current public thinking model
         contents=final_prompt,
         # config=types.GenerateContentConfig(
         #     thinking_config=types.ThinkingConfig(thinking_level="low")

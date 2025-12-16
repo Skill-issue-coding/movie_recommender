@@ -25,12 +25,16 @@ def hello_llm():
     
     data = request.get_json()
     summary_data = data.get('summary')
+    lite = data.get('lite')
 
     if not summary_data:
         return jsonify({"status": "error", "message": "Nyckeln 'summary' saknas i begäran."}), 400
     
+    if not lite:
+        return jsonify({"status": "error", "message": "Nyckeln 'lite' saknas i begäran."}), 400
+    
     try:
-        recommendations_df = get_recommendations_llm(summary_data, GLOBAL_DF)
+        recommendations_df = get_recommendations_llm(summary_data, GLOBAL_DF, lite)
         
         # Kontrollera om funktionen returnerade en DataFrame eller None/fel (om du ändrar get_recommendations_llm)
         if recommendations_df is None:

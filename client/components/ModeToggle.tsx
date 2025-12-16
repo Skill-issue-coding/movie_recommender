@@ -8,7 +8,7 @@ interface ModeToggleProps {
 
 const ModeToggle = ({ isLLM, onToggle }: ModeToggleProps) => {
   return (
-    <div className="flex items-center justify-center gap-4 py-4">
+    <div className="flex items-center justify-center gap-4 py-4 flex-4">
       <div
         className={`flex items-center gap-2 transition-all duration-300 ${
           !isLLM ? "text-primary" : "text-muted-foreground"
