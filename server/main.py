@@ -87,7 +87,7 @@ if __name__ == '__main__':
 
 ''' User inputs used
 
-1)  I want to see a movie about a poor young boy that falls in love with a upper-class girl on a ship. The ship later hits an iceberg and sinks, leaving the young girl as one of few surviors. 
+1)  I want to see a movie about a poor young boy that falls in love with a upper-class girl on a ship. The ship later hits an iceberg and sinks, leaving the young girl as one of few survivors. 
     Answer ML 1-10:                                  Answer LLM 1-10:
     Lifeboat                                         Titanic
     The Notebook                                     The Notebook
@@ -236,4 +236,7 @@ if __name__ == '__main__':
     Gladiator                                        Apocalypto
 
     1/10, movie: The revenant
+
+
+    total: 12/100 same recommendations, LLM had seeked movie at first 9/10, ML had seeked movie in top 10, 5/10 (3 times of those it was first)
 '''
