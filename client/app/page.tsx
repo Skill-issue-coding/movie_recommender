@@ -9,9 +9,11 @@ import MovieCard from "@/components/MovieCard";
 import { EndpointResult } from "@/lib/types";
 import { TypographyH1, TypographyMuted } from "@/components/ui/typography";
 import { LLMEndpoint, MLEndpoint, TestAPI } from "@/lib/functions";
+import LLMToggle from "@/components/llm-toggle";
 
 export default function Home() {
   const [summary, setSummary] = useState("");
+  const [lite, setLite] = useState(false);
   const [apiStatus, setApiStatus] = useState();
   const [isLLM, setIsLLM] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -26,7 +28,7 @@ export default function Home() {
     setHasSearched(true);
 
     if (isLLM) {
-      const result = await LLMEndpoint(summary);
+      const result = await LLMEndpoint(summary, lite);
       setRecommendations(result?.recommendations ?? []);
       setIsLoading(false);
     }
@@ -64,9 +66,7 @@ export default function Home() {
       <div className="flex flex-col items-center w-full min-h-screen gradient-hero">
         <p className="mt-4">
           Api status:{" "}
-          <span className="text-primary font-bold">
-            {apiStatus ? "Online" : "Offline"}
-          </span>
+          <span className="text-primary font-bold">{apiStatus ? "Online" : "Offline"}</span>
         </p>
         <div className="container flex flex-col items-center justify-center max-w-3xl gap-8 px-4 py-12 md:py-20 flex-2">
           {/* Header */}
@@ -82,9 +82,8 @@ export default function Home() {
               </div>
             </div>
             <p className="max-w-md text-lg text-muted-foreground">
-              Your movie <span className="text-primary"> recommender,</span>{" "}
-              describe the kind of movie you're in the mood for, and we'll find
-              the perfect match.
+              Your movie <span className="text-primary"> recommender,</span> describe the kind of
+              movie you're in the mood for, and we'll find the perfect match.
             </p>
           </header>
 
@@ -98,7 +97,10 @@ export default function Home() {
                 className="max-w-2xl text-base min-h-40 bg-background/50 w-2xl"
               />
 
-              <ModeToggle isLLM={isLLM} onToggle={setIsLLM} />
+              <div className="flex gap-4 w-full">
+                <ModeToggle isLLM={isLLM} onToggle={setIsLLM} />
+                {isLLM && <LLMToggle isLLM={isLLM} onToggle={setLite} currentToggle={lite} />}
+              </div>
 
               <Button
                 variant="glow"
